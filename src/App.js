@@ -225,6 +225,7 @@ class App extends React.Component {
             <Typography component="h1" variant="h6" className={classes.title}>
               Data Browser
             </Typography>
+            <img src={process.env.PUBLIC_URL + "/icon.png"} height="40rem"/>
           </Toolbar>
         </AppBar>
         <Drawer classes={{paper: classes.drawer}} open={this.state.drawerOpen} onClose={this.handleClose}>
