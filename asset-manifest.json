@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/SMVDataBrowser/static/css/main.6dea0f05.chunk.css",
+    "main.js": "/SMVDataBrowser/static/js/main.531443dc.chunk.js",
+    "main.js.map": "/SMVDataBrowser/static/js/main.531443dc.chunk.js.map",
+    "runtime-main.js": "/SMVDataBrowser/static/js/runtime-main.93e3d812.js",
+    "runtime-main.js.map": "/SMVDataBrowser/static/js/runtime-main.93e3d812.js.map",
+    "static/js/2.6d489aa0.chunk.js": "/SMVDataBrowser/static/js/2.6d489aa0.chunk.js",
+    "static/js/2.6d489aa0.chunk.js.map": "/SMVDataBrowser/static/js/2.6d489aa0.chunk.js.map",
+    "static/js/3.0642665f.chunk.js": "/SMVDataBrowser/static/js/3.0642665f.chunk.js",
+    "static/js/3.0642665f.chunk.js.map": "/SMVDataBrowser/static/js/3.0642665f.chunk.js.map",
+    "index.html": "/SMVDataBrowser/index.html",
+    "static/css/main.6dea0f05.chunk.css.map": "/SMVDataBrowser/static/css/main.6dea0f05.chunk.css.map",
+    "static/js/2.6d489aa0.chunk.js.LICENSE.txt": "/SMVDataBrowser/static/js/2.6d489aa0.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.93e3d812.js",
+    "static/js/2.6d489aa0.chunk.js",
+    "static/css/main.6dea0f05.chunk.css",
+    "static/js/main.531443dc.chunk.js"
+  ]
+}
