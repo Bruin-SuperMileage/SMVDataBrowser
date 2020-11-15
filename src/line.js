@@ -31,10 +31,10 @@ class LineGraph extends React.Component{
       ]
     }
     return (  /* onChange={changeDialogState} */ 
-      <div>
-        <Grid container direction={"row"} alignItems="center">
+      <div >
+        <Grid container direction={"row"}>
           <Grid item xs={1}></Grid>
-          <Grid item xs={3}>
+          <Grid item xs={1}>
             <Select onChange={this.props.changeDialogState} defaultValue={'hall-effect|speed'}>
               <MenuItem value="hall-effect|rpm">RPM</MenuItem>
               <MenuItem value="hall-effect|speed">Speed</MenuItem>
@@ -60,6 +60,20 @@ class LineGraph extends React.Component{
               <MenuItem value="environment|temperature">Temperature</MenuItem>
             </Select>
           </Grid>
+          <Grid item xs={2}>
+            <Select onChange={this.props.changeTrial} defaultValue={"1"}>
+              {this.props.trials.map(item => {
+                return ([
+                  <MenuItem value={item}>
+                    {"Trial " + item}
+                  </MenuItem>
+                ])
+              })}
+            </Select>
+          </Grid>
+          {/* <Grid item xs={1}></Grid> */}
+        </Grid>
+        <Grid container direction={"row"}>
           <Grid item xs={12}>
             <div className="card">
               <div className="card-image">

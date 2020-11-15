@@ -1,9 +1,9 @@
 import React from 'react';
 import firebase from './firebase';
-import { Grid, withStyles, Paper, Typography, AppBar, Toolbar, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Divider } from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import DirectionsCarIcon from '@material-ui/icons/DirectionsCar';
+import { Grid, withStyles, Paper, Typography, AppBar, Toolbar } from '@material-ui/core'
+// import MenuIcon from '@material-ui/icons/Menu';
+// import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+// import DirectionsCarIcon from '@material-ui/icons/DirectionsCar';
 import LineGraph from './line'
 
 const styles = theme => ({
@@ -30,7 +30,6 @@ class App extends React.Component {
     super(props);
     this.state = {
       allData: {},
-      trialNumber: "1",
       trials: [],
       drawerOpen: false,
       graph1value: "hall-effect|speed",
@@ -42,6 +41,14 @@ class App extends React.Component {
       graph3Data: [],
       graph4Data: [],
       trialTimes: [],
+      graph1Times: [],
+      graph2Times: [],
+      graph3Times: [],
+      graph4Times: [],
+      graph1Trial: "1",
+      graph2Trial: "1",
+      graph3Trial: "1",
+      graph4Trial: "1",
     }
   }
 
@@ -54,7 +61,7 @@ class App extends React.Component {
         if (key[0]==='T')
           trials.push(Number(key.substring(6)))
       })
-      database.ref("Trial " + this.state.trialNumber).on('value', (snapshot) => {
+      database.ref("Trial 1").on('value', (snapshot) => {
         var times = snapshot.val();
         var trialTimes = [];
         var graph1Data = [];
@@ -74,7 +81,10 @@ class App extends React.Component {
             graph4Data.push(times[key][split4[0]][split2[1]]);
         })
         this.setState({
-          trialTimes: trialTimes,
+          graph1Times: trialTimes,
+          graph2Times: trialTimes,
+          graph3Times: trialTimes,
+          graph4Times: trialTimes,
           graph1Data: graph1Data,
           graph2Data: graph2Data,
           graph3Data: graph3Data,
@@ -90,92 +100,80 @@ class App extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.trialNumber !== this.state.trialNumber) {
+    if (prevState.graph1value !== this.state.graph1value || prevState.graph1Trial !== this.state.graph1Trial) {
+      console.log("data1")
       let database = firebase.database();
-      database.ref("Trial " + this.state.trialNumber).on('value', (snapshot) => {
+      database.ref("Trial " + this.state.graph1Trial).on('value', (snapshot) => {
         var times = snapshot.val();
-        var trialTimes = [];
         var graph1Data = [];
-        var graph2Data = [];
-        var graph3Data = [];
-        var graph4Data= [];
+        var trialTimes = [];
         var split1 = this.state.graph1value.split("|");
-        var split2 = this.state.graph2value.split("|");
-        var split3 = this.state.graph3value.split("|");
-        var split4 = this.state.graph4value.split("|");
         Object.keys(times).forEach(key => {
-          if (Number.isInteger(Number(key[0])))
+          if (Number.isInteger(Number(key[0]))) {
             trialTimes.push(key);
             graph1Data.push(times[key][split1[0]][split1[1]]);
-            graph2Data.push(times[key][split2[0]][split2[1]]);
-            graph3Data.push(times[key][split3[0]][split3[1]]);
-            graph4Data.push(times[key][split4[0]][split4[1]]);
+          }
         })
         this.setState({
-          trialTimes: trialTimes,
-          graph1Data: graph1Data,
-          graph2Data: graph2Data,
-          graph3Data: graph3Data,
-          graph4Data: graph4Data,
-        })
-      })
-    }
-    if (prevState.graph1value !== this.state.graph1value) {
-      let database = firebase.database();
-      database.ref("Trial " + this.state.trialNumber).on('value', (snapshot) => {
-        var times = snapshot.val();
-        var graph1Data = [];
-        var split1 = this.state.graph1value.split("|");
-        Object.keys(times).forEach(key => {
-          if (Number.isInteger(Number(key[0])))
-            graph1Data.push(times[key][split1[0]][split1[1]]);
-        })
-        this.setState({
+          graph1Times: trialTimes,
           graph1Data: graph1Data,
         })
       })
     }
-    if (prevState.graph2value !== this.state.graph2value) {
+    if (prevState.graph2value !== this.state.graph2value || prevState.graph2Trial !== this.state.graph2Trial) {
+      console.log("data2")
       let database = firebase.database();
-      database.ref("Trial " + this.state.trialNumber).on('value', (snapshot) => {
+      database.ref("Trial " + this.state.graph2Trial).on('value', (snapshot) => {
         var times = snapshot.val();
         var graph2Data = [];
+        var trialTimes = [];
         var split1 = this.state.graph2value.split("|");
         Object.keys(times).forEach(key => {
-          if (Number.isInteger(Number(key[0])))
+          if (Number.isInteger(Number(key[0]))) {
+            trialTimes.push(key);
             graph2Data.push(times[key][split1[0]][split1[1]]);
+          }
         })
         this.setState({
+          graph2Times: trialTimes,
           graph2Data: graph2Data,
         })
       })
     }
-    if (prevState.graph3value !== this.state.graph3value) {
+    if (prevState.graph3value !== this.state.graph3value || prevState.graph3Trial !== this.state.graph3Trial) {
       let database = firebase.database();
-      database.ref("Trial " + this.state.trialNumber).on('value', (snapshot) => {
+      database.ref("Trial " + this.state.graph3Trial).on('value', (snapshot) => {
         var times = snapshot.val();
         var graph3Data = [];
+        var trialTimes = [];
         var split1 = this.state.graph3value.split("|");
         Object.keys(times).forEach(key => {
-          if (Number.isInteger(Number(key[0])))
+          if (Number.isInteger(Number(key[0]))) {
+            trialTimes.push(key);
             graph3Data.push(times[key][split1[0]][split1[1]]);
+          }
         })
         this.setState({
+          graph3Times: trialTimes,
           graph3Data: graph3Data,
         })
       })
     }
-    if (prevState.graph4value !== this.state.graph4value) {
+    if (prevState.graph4value !== this.state.graph4value || prevState.graph4Trial !== this.state.graph4Trial) {
       let database = firebase.database();
-      database.ref("Trial " + this.state.trialNumber).on('value', (snapshot) => {
+      database.ref("Trial " + this.state.graph4Trial).on('value', (snapshot) => {
         var times = snapshot.val();
         var graph4Data = [];
+        var trialTimes = [];
         var split1 = this.state.graph4value.split("|");
         Object.keys(times).forEach(key => {
-          if (Number.isInteger(Number(key[0])))
+          if (Number.isInteger(Number(key[0]))) {
+            trialTimes.push(key);
             graph4Data.push(times[key][split1[0]][split1[1]]);
+          }
         })
         this.setState({
+          graph4Times: trialTimes,
           graph4Data: graph4Data,
         })
       })
@@ -213,55 +211,51 @@ class App extends React.Component {
     this.setState({graph4value: event.target.value})
   }
 
+  changeTrial1 = (event) => {
+    console.log("changeTrial1")
+    this.setState({graph1Trial: event.target.value.toString()})
+  }
+
+  changeTrial2 = (event) => {
+    console.log("changeTrial2")
+    this.setState({graph2Trial: event.target.value.toString()})
+  }
+
+  changeTrial3 = (event) => {
+    this.setState({graph3Trial: event.target.value.toString()})
+  }
+
+  changeTrial4 = (event) => {
+    this.setState({graph4Trial: event.target.value.toString()})
+  }
+
   render() {
     const {classes} = this.props;
+    console.log(this.state.graph2Trial)
     return(
-      <Paper className={classes.root}>
+      <Paper className={classes.root} square={true}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton onClick={this.toggleDrawer} className={classes.menuIcon}>
-              <MenuIcon />
-            </IconButton>
             <Typography component="h1" variant="h6" className={classes.title}>
-              Data Browser
+              Bruin Supermileage Data Browser
             </Typography>
-            <img src={process.env.PUBLIC_URL + "/icon.png"} height="40rem"/>
+            <img src={process.env.PUBLIC_URL + "/icon.png"} height="40rem" alt=""/>
           </Toolbar>
         </AppBar>
-        <Drawer classes={{paper: classes.drawer}} open={this.state.drawerOpen} onClose={this.handleClose}>
-          <div className={classes.toolbarIcon}>
-            <IconButton onClick={this.handleClose}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </div>
-          <Divider />
-          <List>
-            {this.state.trials.map(item => {
-              return ([
-                <ListItem button onClick={() => this.setTrial(item)}>
-                  <ListItemIcon>
-                    <DirectionsCarIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={"Trial " + item} />
-                </ListItem>
-              ])
-            })}
-          </List>
-        </Drawer>
         <Grid container direction={"row"}>
           <Grid item xs={6} className={classes.grid}>
-            <LineGraph changeDialogState={this.changeDialogState1} vals={this.state.graph1Data} name={this.state.graph1value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.trialTimes}/>
+            <LineGraph changeDialogState={this.changeDialogState1} vals={this.state.graph1Data} name={this.state.graph1value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph1Times} trials={this.state.trials} changeTrial={this.changeTrial1}/>
           </Grid>
           <Grid item xs={6}>
-            <LineGraph changeDialogState={this.changeDialogState2} vals={this.state.graph2Data} name={this.state.graph2value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.trialTimes}/>
+            <LineGraph changeDialogState={this.changeDialogState2} vals={this.state.graph2Data} name={this.state.graph2value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph2Times} trials={this.state.trials} changeTrial={this.changeTrial2}/>
           </Grid>
         </Grid>
         <Grid container direction={"row"}>
           <Grid item xs={6}>
-            <LineGraph changeDialogState={this.changeDialogState3} vals={this.state.graph3Data} name={this.state.graph3value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.trialTimes}/>
+            <LineGraph changeDialogState={this.changeDialogState3} vals={this.state.graph3Data} name={this.state.graph3value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph3Times} trials={this.state.trials} changeTrial={this.changeTrial3}/>
           </Grid>
           <Grid item xs={6}>
-            <LineGraph changeDialogState={this.changeDialogState4} vals={this.state.graph4Data} name={this.state.graph4value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.trialTimes}/>
+            <LineGraph changeDialogState={this.changeDialogState4} vals={this.state.graph4Data} name={this.state.graph4value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph4Times} trials={this.state.trials} changeTrial={this.changeTrial4}/>
           </Grid>
         </Grid>
       </Paper>
