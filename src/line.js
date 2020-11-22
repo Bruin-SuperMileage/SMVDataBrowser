@@ -36,7 +36,10 @@ class LineGraph extends React.Component{
       }],
     }
     let average = (array) => array.reduce((a, b) => a + b) / array.length;
-    var averageValue = +average(this.props.vals).toPrecision(4);
+    var valArray = [0,0];
+    if (this.props.vals.length !== 0)
+      valArray = this.props.vals;
+    var averageValue = +average(valArray).toPrecision(4);
     return (
       <div >
         <Grid container direction={"row"} justify="center" alignItems="center">
