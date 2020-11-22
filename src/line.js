@@ -1,13 +1,14 @@
 import React from 'react';
 import {Line} from 'react-chartjs-2';
-import { Grid, Select, withStyles, MenuItem } from '@material-ui/core'
+import { Grid, Select, MenuItem, Typography } from '@material-ui/core';
+import 'chart.js';
+import 'chartjs-plugin-trendline';
 
 class LineGraph extends React.Component{
   render() {
     var data = {
       labels: this.props.labels,
-      datasets: [
-      {
+      datasets: [{
         label: this.props.name,
         fill: false,
         lineTension: 0.1,
@@ -27,12 +28,18 @@ class LineGraph extends React.Component{
         pointRadius: 1,
         pointHitRadius: 10,
         data: this.props.vals,
-      }
-      ]
+        trendlineLinear: {
+          style: "rgba(255,255,255,0.8",
+          lineStyle: "solid",
+          width: 3,
+        },
+      }],
     }
-    return (  /* onChange={changeDialogState} */ 
+    let average = (array) => array.reduce((a, b) => a + b) / array.length;
+    var averageValue = +average(this.props.vals).toPrecision(4);
+    return (
       <div >
-        <Grid container direction={"row"}>
+        <Grid container direction={"row"} justify="center" alignItems="center">
           <Grid item xs={1}></Grid>
           <Grid item xs={2}>
             <Select onChange={this.props.changeDialogState} defaultValue={'hall-effect|speed'}>
@@ -60,7 +67,10 @@ class LineGraph extends React.Component{
               <MenuItem value="environment|temperature">Temperature</MenuItem>
             </Select>
           </Grid>
-          <Grid item xs={7}></Grid>
+          <Grid item xs={2}>
+            <Typography variant="body1">Average: {averageValue}</Typography>
+          </Grid>
+          <Grid item xs={5}></Grid>
           <Grid item xs={2}>
             <Select onChange={this.props.changeTrial} defaultValue={"1"}>
               {this.props.trials.map(item => {
@@ -72,13 +82,12 @@ class LineGraph extends React.Component{
               })}
             </Select>
           </Grid>
-          {/* <Grid item xs={1}></Grid> */}
         </Grid>
         <Grid container direction={"row"}>
           <Grid item xs={12}>
             <div className="card">
               <div className="card-image">
-                <Line data={data} height={125}MenuItems={{maintainAspectRatio: true}} />
+                <Line data={data} height={125}/>
               </div>
             </div>
           </Grid>
