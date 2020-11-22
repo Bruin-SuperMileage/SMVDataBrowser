@@ -11,6 +11,17 @@ object-assign
  * Released under the MIT License
  */
 
+/*!
+ * chartjs-plugin-trendline.js
+ * Version: 0.2.2
+ *
+ * Copyright 2020 Marcus Alsterfjord
+ * Released under the MIT license
+ * https://github.com/Makanz/chartjs-plugin-trendline/blob/master/README.md
+ *
+ * Mod by: vesal: accept also xy-data so works with scatter
+ */
+
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
 
