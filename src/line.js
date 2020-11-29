@@ -1,10 +1,18 @@
 import React from 'react';
 import {Line} from 'react-chartjs-2';
-import { Grid, Select, MenuItem, Typography } from '@material-ui/core';
+import { Grid, Select, MenuItem, Typography, Button } from '@material-ui/core';
 import 'chart.js';
 import 'chartjs-plugin-trendline';
+import 'chartjs-plugin-zoom';
+import 'hammerjs'
 
 class LineGraph extends React.Component{
+  constructor(props){
+    super(props)
+    this.ref = {
+      lineChart: React.createRef()
+    }
+  }
   render() {
     var data = {
       labels: this.props.labels,
@@ -34,6 +42,32 @@ class LineGraph extends React.Component{
           width: 3,
         },
       }],
+    }
+    var options = {
+      plugins: {
+        zoom: {
+          pan: {
+            enabled: true,
+            mode:'x',
+            sensitivity: 0,
+            speed: 10,
+            threshold: 0,
+            rangeMin: {
+              x: 0,
+            }
+          },
+          zoom: {
+            enabled: true,
+            drag: false,
+            mode: 'x',
+            sensitivity:0,
+            rangeMin: {
+              x: 0,
+            },
+            speed: 1,
+          },
+        },
+      },
     }
     let average = (array) => array.reduce((a, b) => a + b) / array.length;
     var valArray = [0,0];
@@ -73,7 +107,11 @@ class LineGraph extends React.Component{
           <Grid item xs={2}>
             <Typography variant="body1">Average: {averageValue}</Typography>
           </Grid>
-          <Grid item xs={5}></Grid>
+          <Grid item xs={5}>
+            <Button onClick={()=>{this.ref.lineChart.chartInstance.resetZoom()}}>
+               Reset Zoom
+            </Button>
+          </Grid>
           <Grid item xs={2}>
             <Select onChange={this.props.changeTrial} defaultValue={"1"}>
               {this.props.trials.map(item => {
@@ -90,7 +128,11 @@ class LineGraph extends React.Component{
           <Grid item xs={12}>
             <div className="card">
               <div className="card-image">
-                <Line data={data} height={125}/>
+                <Line 
+                  data={data} 
+                  height={125} 
+                  options={options}
+                  ref={(reference)=>(this.ref.lineChart=reference)}/>
               </div>
             </div>
           </Grid>
