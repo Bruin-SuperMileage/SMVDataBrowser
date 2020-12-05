@@ -1,103 +1,87 @@
 import React from 'react';
+import {Line} from 'react-chartjs-2';
 import { Grid, Select, MenuItem, Typography, Button } from '@material-ui/core';
-import Chart from "react-apexcharts";
-import { dark } from '@material-ui/core/styles/createPalette';
-import './App.css'
+import 'chart.js';
+import 'chartjs-plugin-trendline';
+import 'chartjs-plugin-zoom';
+import 'hammerjs'
 
-class LineGraph extends React.Component {
+class LineGraph extends React.Component{
+  constructor(props){
+    super(props)
+    this.ref = {
+      lineChart: React.createRef()
+    }
+  }
   render() {
-    var imgPath = "<img src=" + process.env.PUBLIC_URL + '/reset.png width="20">';
-    console.log("test");
-    console.log(this.props.labels);
-    var series = [{
-      name: this.props.name,
-      data: this.props.vals
-    }]
+    var data = {
+      labels: this.props.labels,
+      datasets: [{
+        label: this.props.name,
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: 'rgba(75,192,192,0.4)',
+        borderColor: 'rgba(66, 129, 245,1)',
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: 'rgba(75,192,192,1)',
+        pointBackgroundColor: '#fff',
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+        pointHoverBorderColor: 'rgba(220,220,220,1)',
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data: this.props.vals,
+        //data: [{x: new Date(), y: 10}, {x: new Date(), y: 11}],
+        trendlineLinear: {
+          style: "rgba(255,255,255,0.8",
+          lineStyle: "solid",
+          width: 3,
+        },
+      }],
+    }
     var options = {
-      chart: {
-        animations: {
-          enabled: true,
-        },
-        type: 'line',
-        toolbar: {
-          tools: {
-            show: true,
-            reset: imgPath,
-          },
-          export: {
-            csv: {
-              filename: this.props.name,
-            },
-            png: {
-              filename: this.props.name,
-            },
-          }
-        },
-        fontFamily: 'Roboto',
-      },
-      colors: ['#3463d9'],
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: 'smooth',
-        width: 2,
-      },
-      title: {
-        text: this.props.name,
-        align: 'center',
-        style: {
-          color: "#fafafa",
-          fontWeight: 'normal',
-          fontSize: "20px"
-        }
-      },
-      grid: {
-        borderColor: '#2e2d2d',
-        row: {
-          colors: ['transparent'],
-          opacity: 0.5
-        },
-        column: {
-          colors: ['transparent'],
-          opacity: 0.5
-        }
-      },
-      markers: {
-        size: 1,
-      },
-      xaxis: {
-        categories: this.props.labels,
-        labels: {
-          style: {
-            colors: "#757171"
-          }
-        },
-        axisBorder: {
-          show: true,
-          color: '#000000'
-        },
-        axisTicks: {
-          show: false,
-        }
-      },
-      yaxis: {
-        labels: {
-          style: {
-            colors: "#757171"
-          }
-        },
-        axisBorder: {
-          show: true,
-          color: '#000000'
-        },
-      },
-      tooltip: {
-        enabled: true,
-        followCursor: false,
-        fillSeriesColor: true,
-        theme: "dark",
-      },
+    //   scales: {
+    //     xAxes: [{
+    //       type: "time",
+    //       time: {
+    //         unit: "minute",
+    //       },
+    //       ticks: {
+    //         min: new Date(this.props.labels[0]),
+    //         beginAtZero: false,
+    //         maxTicksLimit: 20,
+    //       }
+    //     }],
+    //   },
+      // plugins: {
+      //   zoom: {
+      //     pan: {
+      //       enabled: true,
+      //       mode:'x',
+      //       sensitivity: 0,
+      //       speed: 10,
+      //       threshold: 0,
+      //       rangeMin: {
+      //         x: 0,
+      //       }
+      //     },
+      //     zoom: {
+      //       enabled: true,
+      //       drag: false,
+      //       mode: 'x',
+      //       sensitivity:0,
+      //       rangeMin: {
+      //         x: 0,
+      //       },
+      //       speed: 1,
+      //     },
+      //   },
+      // },
     }
     let average = (array) => array.reduce((a, b) => a + b) / array.length;
     var valArray = [0,0];
@@ -105,7 +89,7 @@ class LineGraph extends React.Component {
       valArray = this.props.vals;
     var averageValue = +average(valArray).toPrecision(4);
     return (
-      <div>
+      <div >
         <Grid container direction={"row"} justify="center" alignItems="center">
           <Grid item xs={1}></Grid>
           <Grid item xs={2}>
@@ -138,9 +122,9 @@ class LineGraph extends React.Component {
             <Typography variant="body1">Average: {averageValue}</Typography>
           </Grid>
           <Grid item xs={5}>
-            {/* <Button onClick={()=>{this.ref.lineChart.chartInstance.resetZoom()}}>
-                Reset Zoom
-            </Button> */}
+            <Button onClick={()=>{this.ref.lineChart.chartInstance.resetZoom()}}>
+               Reset Zoom
+            </Button>
           </Grid>
           <Grid item xs={2}>
             <Select onChange={this.props.changeTrial} defaultValue={"1"}>
@@ -158,12 +142,11 @@ class LineGraph extends React.Component {
           <Grid item xs={12}>
             <div className="card">
               <div className="card-image">
-                <Chart 
-                options={options}
-                series={series}
-                type="line"
-                height={430}
-                />
+                <Line 
+                  data={data} 
+                  height={125} 
+                  options={options}
+                  ref={(reference)=>(this.ref.lineChart=reference)}/>
               </div>
             </div>
           </Grid>
@@ -171,6 +154,6 @@ class LineGraph extends React.Component {
       </div>
     );
   }
-}
+};
 
-export default LineGraph
+export default LineGraph; 

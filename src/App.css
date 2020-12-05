@@ -36,3 +36,8 @@
     transform: rotate(360deg);
   }
 }
+
+.apexcharts-menu{
+    background-color: #343436!important;
+    border: 0px;
+}

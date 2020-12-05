@@ -4,6 +4,7 @@ import { Grid, withStyles, Paper, Typography, AppBar, Toolbar } from '@material-
 // import MenuIcon from '@material-ui/icons/Menu';
 // import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 // import DirectionsCarIcon from '@material-ui/icons/DirectionsCar';
+//import LineGraph from './line'
 import LineGraph from './line'
 
 const styles = theme => ({
@@ -11,7 +12,7 @@ const styles = theme => ({
     height: "100%",
     width: "100%",
     position: "fixed",
-    backgroundColor: "rgb(51, 48, 48)"
+    backgroundColor: "rgb(51, 48, 48)",
   },
   drawer: {
     width: "10rem",
@@ -101,7 +102,6 @@ class App extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.graph1value !== this.state.graph1value || prevState.graph1Trial !== this.state.graph1Trial) {
-      console.log("data1")
       let database = firebase.database();
       database.ref("Trial " + this.state.graph1Trial).on('value', (snapshot) => {
         var times = snapshot.val();
@@ -121,7 +121,6 @@ class App extends React.Component {
       })
     }
     if (prevState.graph2value !== this.state.graph2value || prevState.graph2Trial !== this.state.graph2Trial) {
-      console.log("data2")
       let database = firebase.database();
       database.ref("Trial " + this.state.graph2Trial).on('value', (snapshot) => {
         var times = snapshot.val();
@@ -212,12 +211,10 @@ class App extends React.Component {
   }
 
   changeTrial1 = (event) => {
-    console.log("changeTrial1")
     this.setState({graph1Trial: event.target.value.toString()})
   }
 
   changeTrial2 = (event) => {
-    console.log("changeTrial2")
     this.setState({graph2Trial: event.target.value.toString()})
   }
 
@@ -231,7 +228,6 @@ class App extends React.Component {
 
   render() {
     const {classes} = this.props;
-    console.log(this.state.graph2Trial)
     return(
       <Paper className={classes.root} square={true}>
         <AppBar position="static">
@@ -242,9 +238,10 @@ class App extends React.Component {
             <img src={process.env.PUBLIC_URL + "/icon.png"} height="40rem" alt=""/>
           </Toolbar>
         </AppBar>
-        <Grid container direction={"row"}>
+        <Grid container direction={"row"} alignItems={"stretch"}>
           <Grid item xs={6} className={classes.grid}>
             <LineGraph changeDialogState={this.changeDialogState1} vals={this.state.graph1Data} name={this.state.graph1value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph1Times} trials={this.state.trials} changeTrial={this.changeTrial1}/>
+            {/* <ApexLineGraph changeDialogState={this.changeDialogState1} vals={this.state.graph1Data} name={this.state.graph1value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph1Times} trials={this.state.trials} changeTrial={this.changeTrial1}/> */}
           </Grid>
           <Grid item xs={6}>
             <LineGraph changeDialogState={this.changeDialogState2} vals={this.state.graph2Data} name={this.state.graph2value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph2Times} trials={this.state.trials} changeTrial={this.changeTrial2}/>
