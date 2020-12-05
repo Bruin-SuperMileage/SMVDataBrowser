@@ -1,22 +1,26 @@
 {
   "files": {
-    "main.css": "/SMVDataBrowser/static/css/main.6dea0f05.chunk.css",
-    "main.js": "/SMVDataBrowser/static/js/main.6bd13a49.chunk.js",
-    "main.js.map": "/SMVDataBrowser/static/js/main.6bd13a49.chunk.js.map",
-    "runtime-main.js": "/SMVDataBrowser/static/js/runtime-main.d95e372a.js",
-    "runtime-main.js.map": "/SMVDataBrowser/static/js/runtime-main.d95e372a.js.map",
-    "static/js/2.c5d2e215.chunk.js": "/SMVDataBrowser/static/js/2.c5d2e215.chunk.js",
-    "static/js/2.c5d2e215.chunk.js.map": "/SMVDataBrowser/static/js/2.c5d2e215.chunk.js.map",
-    "static/js/3.3910f0be.chunk.js": "/SMVDataBrowser/static/js/3.3910f0be.chunk.js",
-    "static/js/3.3910f0be.chunk.js.map": "/SMVDataBrowser/static/js/3.3910f0be.chunk.js.map",
+    "main.css": "/SMVDataBrowser/static/css/main.963695f5.chunk.css",
+    "main.js": "/SMVDataBrowser/static/js/main.e21c3371.chunk.js",
+    "main.js.map": "/SMVDataBrowser/static/js/main.e21c3371.chunk.js.map",
+    "runtime-main.js": "/SMVDataBrowser/static/js/runtime-main.1f455737.js",
+    "runtime-main.js.map": "/SMVDataBrowser/static/js/runtime-main.1f455737.js.map",
+    "static/css/2.4bc40b91.chunk.css": "/SMVDataBrowser/static/css/2.4bc40b91.chunk.css",
+    "static/js/2.c8b90e21.chunk.js": "/SMVDataBrowser/static/js/2.c8b90e21.chunk.js",
+    "static/js/2.c8b90e21.chunk.js.map": "/SMVDataBrowser/static/js/2.c8b90e21.chunk.js.map",
+    "static/js/3.e8f308f5.chunk.js": "/SMVDataBrowser/static/js/3.e8f308f5.chunk.js",
+    "static/js/3.e8f308f5.chunk.js.map": "/SMVDataBrowser/static/js/3.e8f308f5.chunk.js.map",
     "index.html": "/SMVDataBrowser/index.html",
-    "static/css/main.6dea0f05.chunk.css.map": "/SMVDataBrowser/static/css/main.6dea0f05.chunk.css.map",
-    "static/js/2.c5d2e215.chunk.js.LICENSE.txt": "/SMVDataBrowser/static/js/2.c5d2e215.chunk.js.LICENSE.txt"
+    "static/css/2.4bc40b91.chunk.css.map": "/SMVDataBrowser/static/css/2.4bc40b91.chunk.css.map",
+    "static/css/main.963695f5.chunk.css.map": "/SMVDataBrowser/static/css/main.963695f5.chunk.css.map",
+    "static/js/2.c8b90e21.chunk.js.LICENSE.txt": "/SMVDataBrowser/static/js/2.c8b90e21.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/SMVDataBrowser/static/media/roboto-latin-900italic.cb5ad999.woff2"
   },
   "entrypoints": [
-    "static/js/runtime-main.d95e372a.js",
-    "static/js/2.c5d2e215.chunk.js",
-    "static/css/main.6dea0f05.chunk.css",
-    "static/js/main.6bd13a49.chunk.js"
+    "static/js/runtime-main.1f455737.js",
+    "static/css/2.4bc40b91.chunk.css",
+    "static/js/2.c8b90e21.chunk.js",
+    "static/css/main.963695f5.chunk.css",
+    "static/js/main.e21c3371.chunk.js"
   ]
 }

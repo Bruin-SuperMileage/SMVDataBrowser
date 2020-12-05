@@ -5,32 +5,9 @@ object-assign
 */
 
 /*!
- * @license
- * chartjs-plugin-zoom
- * http://chartjs.org/
- * Version: 0.7.7
- *
- * Copyright 2020 Chart.js Contributors
- * Released under the MIT license
- * https://github.com/chartjs/chartjs-plugin-zoom/blob/master/LICENSE.md
- */
-
-/*!
- * Chart.js v2.9.4
- * https://www.chartjs.org
- * (c) 2020 Chart.js Contributors
- * Released under the MIT License
- */
-
-/*!
- * chartjs-plugin-trendline.js
- * Version: 0.2.2
- *
- * Copyright 2020 Marcus Alsterfjord
- * Released under the MIT license
- * https://github.com/Makanz/chartjs-plugin-trendline/blob/master/README.md
- *
- * Mod by: vesal: accept also xy-data so works with scatter
+ * ApexCharts v3.22.2
+ * (c) 2018-2020 Juned Chhipa
+ * Released under the MIT License.
  */
 
 /*! *****************************************************************************
@@ -63,11 +40,13 @@ See the Apache Version 2.0 License for specific language governing permissions
 and limitations under the License.
 ***************************************************************************** */
 
-/*! Hammer.JS - v2.0.7 - 2016-04-22
- * http://hammerjs.github.io/
- *
- * Copyright (c) 2016 Jorik Tangelder;
- * Licensed under the MIT license */
+/*! svg.draggable.js - v2.2.2 - 2019-01-08
+* https://github.com/svgdotjs/svg.draggable.js
+* Copyright (c) 2019 Wout Fierens; Licensed MIT */
+
+/*! svg.filter.js - v2.0.2 - 2016-02-24
+* https://github.com/wout/svg.filter.js
+* Copyright (c) 2016 Wout Fierens; Licensed MIT */
 
 /**
  * @license
@@ -172,5 +151,3 @@ and limitations under the License.
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
-//! moment.js
