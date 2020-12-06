@@ -9,9 +9,9 @@ import LineGraph from './line'
 
 const styles = theme => ({
   root: {
-    height: "100%",
-    width: "100%",
-    position: "fixed",
+    minHeight: "100vh",
+    // width: "100%",
+    // position: "fixed",
     backgroundColor: "rgb(51, 48, 48)",
   },
   drawer: {
@@ -238,22 +238,24 @@ class App extends React.Component {
             <img src={process.env.PUBLIC_URL + "/icon.png"} height="40rem" alt=""/>
           </Toolbar>
         </AppBar>
-        <Grid container direction={"row"} alignItems={"stretch"}>
-          <Grid item xs={6} className={classes.grid}>
-            <LineGraph changeDialogState={this.changeDialogState1} vals={this.state.graph1Data} name={this.state.graph1value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph1Times} trials={this.state.trials} changeTrial={this.changeTrial1}/>
-            {/* <ApexLineGraph changeDialogState={this.changeDialogState1} vals={this.state.graph1Data} name={this.state.graph1value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph1Times} trials={this.state.trials} changeTrial={this.changeTrial1}/> */}
-          </Grid>
-          <Grid item xs={6}>
-            <LineGraph changeDialogState={this.changeDialogState2} vals={this.state.graph2Data} name={this.state.graph2value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph2Times} trials={this.state.trials} changeTrial={this.changeTrial2}/>
-          </Grid>
-        </Grid>
-        <Grid container direction={"row"}>
-          <Grid item xs={6}>
-            <LineGraph changeDialogState={this.changeDialogState3} vals={this.state.graph3Data} name={this.state.graph3value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph3Times} trials={this.state.trials} changeTrial={this.changeTrial3}/>
-          </Grid>
-          <Grid item xs={6}>
-            <LineGraph changeDialogState={this.changeDialogState4} vals={this.state.graph4Data} name={this.state.graph4value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph4Times} trials={this.state.trials} changeTrial={this.changeTrial4}/>
-          </Grid>
+        <Grid container spacing={0}>
+            <Grid container direction={"row"} alignItems={"stretch"}>
+            <Grid item xs={6} className={classes.grid}>
+                <LineGraph changeDialogState={this.changeDialogState1} vals={this.state.graph1Data} name={this.state.graph1value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph1Times} trials={this.state.trials} changeTrial={this.changeTrial1}/>
+                {/* <ApexLineGraph changeDialogState={this.changeDialogState1} vals={this.state.graph1Data} name={this.state.graph1value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph1Times} trials={this.state.trials} changeTrial={this.changeTrial1}/> */}
+            </Grid>
+            <Grid item xs={6}>
+                <LineGraph changeDialogState={this.changeDialogState2} vals={this.state.graph2Data} name={this.state.graph2value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph2Times} trials={this.state.trials} changeTrial={this.changeTrial2}/>
+            </Grid>
+            </Grid>
+            <Grid container direction={"row"}>
+            <Grid item xs={6}>
+                <LineGraph changeDialogState={this.changeDialogState3} vals={this.state.graph3Data} name={this.state.graph3value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph3Times} trials={this.state.trials} changeTrial={this.changeTrial3}/>
+            </Grid>
+            <Grid item xs={6}>
+                <LineGraph changeDialogState={this.changeDialogState4} vals={this.state.graph4Data} name={this.state.graph4value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph4Times} trials={this.state.trials} changeTrial={this.changeTrial4}/>
+            </Grid>
+            </Grid>
         </Grid>
       </Paper>
     );

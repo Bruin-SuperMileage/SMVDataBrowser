@@ -162,7 +162,7 @@ class LineGraph extends React.Component {
                 options={options}
                 series={series}
                 type="line"
-                height={430}
+                height="430"
                 />
               </div>
             </div>
