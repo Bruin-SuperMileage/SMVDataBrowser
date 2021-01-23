@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/SMVDataBrowser/static/css/main.239c3ced.chunk.css",
-    "main.js": "/SMVDataBrowser/static/js/main.1190e1ef.chunk.js",
-    "main.js.map": "/SMVDataBrowser/static/js/main.1190e1ef.chunk.js.map",
+    "main.js": "/SMVDataBrowser/static/js/main.2152ab57.chunk.js",
+    "main.js.map": "/SMVDataBrowser/static/js/main.2152ab57.chunk.js.map",
     "runtime-main.js": "/SMVDataBrowser/static/js/runtime-main.3c898f68.js",
     "runtime-main.js.map": "/SMVDataBrowser/static/js/runtime-main.3c898f68.js.map",
     "static/css/2.4bc40b91.chunk.css": "/SMVDataBrowser/static/css/2.4bc40b91.chunk.css",
@@ -21,6 +21,6 @@
     "static/css/2.4bc40b91.chunk.css",
     "static/js/2.8b701c66.chunk.js",
     "static/css/main.239c3ced.chunk.css",
-    "static/js/main.1190e1ef.chunk.js"
+    "static/js/main.2152ab57.chunk.js"
   ]
 }
