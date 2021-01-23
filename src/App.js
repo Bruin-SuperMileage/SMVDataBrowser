@@ -50,6 +50,11 @@ class App extends React.Component {
       graph2Trial: "1",
       graph3Trial: "1",
       graph4Trial: "1",
+      graph1Laps: [],
+      graph2Laps: [],
+      graph3Laps: [],
+      graph4Laps: [],
+      running: ""
     }
   }
 
@@ -58,6 +63,13 @@ class App extends React.Component {
     var trials = [];
     database.ref().on('value', (snapshot) => {
       var allData = snapshot.val();
+      var running = allData["Running"];
+      this.setState({
+        running: running,
+      })
+      if (running === "True")
+        return;
+      trials = [];
       Object.keys(allData).forEach(key => {
         if (key[0]==='T')
           trials.push(Number(key.substring(6)))
@@ -73,13 +85,27 @@ class App extends React.Component {
         var split2 = this.state.graph2value.split("|");
         var split3 = this.state.graph3value.split("|");
         var split4 = this.state.graph4value.split("|");
+        var first = false;
+        var firstValue = 0;
+        const zeroPad = (num, places) => String(num).padStart(places, '0');
         Object.keys(times).forEach(key => {
-          if (Number.isInteger(Number(key[0])))
-            trialTimes.push(key);
+          var keySplit = key.split(":");
+          var keyMilli = parseInt(keySplit[0])*3600000 + parseInt(keySplit[1])*60000 + parseInt(keySplit[2])*1000 + parseInt(keySplit[3]);
+          if (first === false) {
+            firstValue = keyMilli;
+            first = true;
+          }
+          if (Number.isInteger(Number(key[0]))) {
+            var subMilli = keyMilli-firstValue;
+            var label = zeroPad(parseInt((subMilli / (1000*60)) % 60), 2) + ":" 
+                        + zeroPad(parseInt((subMilli / (1000)) % 60), 2) + ":" 
+                        + zeroPad(parseInt(subMilli % 1000), 3);
+            trialTimes.push(label);
             graph1Data.push(times[key][split1[0]][split1[1]]);
             graph2Data.push(times[key][split2[0]][split2[1]]);
             graph3Data.push(times[key][split3[0]][split3[1]]);
             graph4Data.push(times[key][split4[0]][split2[1]]);
+          }
         })
         this.setState({
           graph1Times: trialTimes,
@@ -108,15 +134,49 @@ class App extends React.Component {
         var graph1Data = [];
         var trialTimes = [];
         var split1 = this.state.graph1value.split("|");
+        var first = false;
+        var firstValue = 0;
+        var lapTimes = [];
+        var currentLap = 0;
+        var graphIndexes = [];
+        const zeroPad = (num, places) => String(num).padStart(places, '0')
         Object.keys(times).forEach(key => {
+          var keySplit = key.split(":");
+          var keyMilli = parseInt(keySplit[0])*3600000 + parseInt(keySplit[1])*60000 + parseInt(keySplit[2])*1000 + parseInt(keySplit[3]);
+          var lapAccu = 0;
+          if (first === false) {
+            firstValue = keyMilli;
+            first = true;
+            if (typeof times["lap times"] !== 'undefined') {
+              Object.keys(times["lap times"]).forEach(key => {
+                if (Number(key[0])) {
+                  var lapSplit= times["lap times"][key].split(":");
+                  var secondLapSplit = lapSplit[1].split(".")
+                  var lapMilli = parseInt(lapSplit[0])*60000 + parseInt(secondLapSplit[0])*1000 + parseInt(secondLapSplit[1])
+                  lapAccu += lapMilli;
+                  lapTimes.push(lapAccu);
+                  console.log(lapAccu)
+                }
+              })
+            }
+          }
           if (Number.isInteger(Number(key[0]))) {
-            trialTimes.push(key);
+            var subMilli = keyMilli-firstValue;
+            var label = zeroPad(parseInt((subMilli / (1000*60)) % 60), 2) + ":" 
+                        + zeroPad(parseInt((subMilli / (1000)) % 60), 2) + ":" 
+                        + zeroPad(parseInt(subMilli % 1000), 3);
+            trialTimes.push(label);
+            if (subMilli > lapTimes[currentLap] && currentLap+1 <= lapTimes.length) {
+              graphIndexes.push(label);
+              currentLap++;
+            }
             graph1Data.push(times[key][split1[0]][split1[1]]);
           }
         })
         this.setState({
           graph1Times: trialTimes,
           graph1Data: graph1Data,
+          graph1Laps: graphIndexes,
         })
       })
     }
@@ -127,15 +187,49 @@ class App extends React.Component {
         var graph2Data = [];
         var trialTimes = [];
         var split1 = this.state.graph2value.split("|");
+        var first = false;
+        var firstValue = 0;
+        var lapTimes = [];
+        var currentLap = 0;
+        var graphIndexes = [];
+        const zeroPad = (num, places) => String(num).padStart(places, '0')
         Object.keys(times).forEach(key => {
+          var keySplit = key.split(":");
+          var keyMilli = parseInt(keySplit[0])*3600000 + parseInt(keySplit[1])*60000 + parseInt(keySplit[2])*1000 + parseInt(keySplit[3]);
+          var lapAccu = 0;
+          if (first === false) {
+            firstValue = keyMilli;
+            first = true;
+            if (typeof times["lap times"] !== 'undefined') {
+              Object.keys(times["lap times"]).forEach(key => {
+                if (Number(key[0])) {
+                  var lapSplit= times["lap times"][key].split(":");
+                  var secondLapSplit = lapSplit[1].split(".")
+                  var lapMilli = parseInt(lapSplit[0])*60000 + parseInt(secondLapSplit[0])*1000 + parseInt(secondLapSplit[1])
+                  lapAccu += lapMilli;
+                  lapTimes.push(lapAccu);
+                  console.log(lapAccu)
+                }
+              })
+            }
+          }
           if (Number.isInteger(Number(key[0]))) {
-            trialTimes.push(key);
+            var subMilli = keyMilli-firstValue;
+            var label = zeroPad(parseInt((subMilli / (1000*60)) % 60), 2) + ":" 
+                        + zeroPad(parseInt((subMilli / (1000)) % 60), 2) + ":" 
+                        + zeroPad(parseInt(subMilli % 1000), 3);
+            trialTimes.push(label);
+            if (subMilli > lapTimes[currentLap] && currentLap+1 <= lapTimes.length) {
+              graphIndexes.push(label);
+              currentLap++;
+            }
             graph2Data.push(times[key][split1[0]][split1[1]]);
           }
         })
         this.setState({
           graph2Times: trialTimes,
           graph2Data: graph2Data,
+          graph2Laps: graphIndexes,
         })
       })
     }
@@ -146,15 +240,49 @@ class App extends React.Component {
         var graph3Data = [];
         var trialTimes = [];
         var split1 = this.state.graph3value.split("|");
+        var first = false;
+        var firstValue = 0;
+        var lapTimes = [];
+        var currentLap = 0;
+        var graphIndexes = [];
+        const zeroPad = (num, places) => String(num).padStart(places, '0')
         Object.keys(times).forEach(key => {
+          var keySplit = key.split(":");
+          var keyMilli = parseInt(keySplit[0])*3600000 + parseInt(keySplit[1])*60000 + parseInt(keySplit[2])*1000 + parseInt(keySplit[3]);
+          var lapAccu = 0;
+          if (first === false) {
+            firstValue = keyMilli;
+            first = true;
+            if (typeof times["lap times"] !== 'undefined') {
+              Object.keys(times["lap times"]).forEach(key => {
+                if (Number(key[0])) {
+                  var lapSplit= times["lap times"][key].split(":");
+                  var secondLapSplit = lapSplit[1].split(".")
+                  var lapMilli = parseInt(lapSplit[0])*60000 + parseInt(secondLapSplit[0])*1000 + parseInt(secondLapSplit[1])
+                  lapAccu += lapMilli;
+                  lapTimes.push(lapAccu);
+                  console.log(lapAccu)
+                }
+              })
+            }
+          }
           if (Number.isInteger(Number(key[0]))) {
-            trialTimes.push(key);
+            var subMilli = keyMilli-firstValue;
+            var label = zeroPad(parseInt((subMilli / (1000*60)) % 60), 2) + ":" 
+                        + zeroPad(parseInt((subMilli / (1000)) % 60), 2) + ":" 
+                        + zeroPad(parseInt(subMilli % 1000), 3);
+            trialTimes.push(label);
+            if (subMilli > lapTimes[currentLap] && currentLap+1 <= lapTimes.length) {
+              graphIndexes.push(label);
+              currentLap++;
+            }
             graph3Data.push(times[key][split1[0]][split1[1]]);
           }
         })
         this.setState({
           graph3Times: trialTimes,
           graph3Data: graph3Data,
+          graph3Laps: graphIndexes,
         })
       })
     }
@@ -165,18 +293,61 @@ class App extends React.Component {
         var graph4Data = [];
         var trialTimes = [];
         var split1 = this.state.graph4value.split("|");
+        var first = false;
+        var firstValue = 0;
+        var lapTimes = [];
+        var currentLap = 0;
+        var graphIndexes = [];
+        const zeroPad = (num, places) => String(num).padStart(places, '0')
         Object.keys(times).forEach(key => {
+          var keySplit = key.split(":");
+          var keyMilli = parseInt(keySplit[0])*3600000 + parseInt(keySplit[1])*60000 + parseInt(keySplit[2])*1000 + parseInt(keySplit[3]);
+          var lapAccu = 0;
+          if (first === false) {
+            firstValue = keyMilli;
+            first = true;
+            if (typeof times["lap times"] !== 'undefined') {
+              Object.keys(times["lap times"]).forEach(key => {
+                if (Number(key[0])) {
+                  var lapSplit= times["lap times"][key].split(":");
+                  var secondLapSplit = lapSplit[1].split(".")
+                  var lapMilli = parseInt(lapSplit[0])*60000 + parseInt(secondLapSplit[0])*1000 + parseInt(secondLapSplit[1])
+                  lapAccu += lapMilli;
+                  lapTimes.push(lapAccu);
+                  console.log(lapAccu)
+                }
+              })
+            }
+          }
           if (Number.isInteger(Number(key[0]))) {
-            trialTimes.push(key);
+            var subMilli = keyMilli-firstValue;
+            var label = zeroPad(parseInt((subMilli / (1000*60)) % 60), 2) + ":" 
+                        + zeroPad(parseInt((subMilli / (1000)) % 60), 2) + ":" 
+                        + zeroPad(parseInt(subMilli % 1000), 3);
+            trialTimes.push(label);
+            if (subMilli > lapTimes[currentLap] && currentLap+1 <= lapTimes.length) {
+              graphIndexes.push(label);
+              currentLap++;
+            }
             graph4Data.push(times[key][split1[0]][split1[1]]);
           }
         })
         this.setState({
           graph4Times: trialTimes,
           graph4Data: graph4Data,
+          graph4Laps: graphIndexes,
         })
       })
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.running === "True") {
+      console.log("pause");
+      return false;
+    }
+    console.log("unpause");
+    return true;
   }
 
   toggleDrawer = () => {
@@ -241,19 +412,19 @@ class App extends React.Component {
         <Grid container spacing={0}>
             <Grid container direction={"row"} alignItems={"stretch"}>
             <Grid item xs={6} className={classes.grid}>
-                <LineGraph changeDialogState={this.changeDialogState1} vals={this.state.graph1Data} name={this.state.graph1value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph1Times} trials={this.state.trials} changeTrial={this.changeTrial1}/>
+                <LineGraph changeDialogState={this.changeDialogState1} vals={this.state.graph1Data} name={this.state.graph1value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph1Times} trials={this.state.trials} changeTrial={this.changeTrial1} laps={this.state.graph1Laps}/>
                 {/* <ApexLineGraph changeDialogState={this.changeDialogState1} vals={this.state.graph1Data} name={this.state.graph1value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph1Times} trials={this.state.trials} changeTrial={this.changeTrial1}/> */}
             </Grid>
             <Grid item xs={6}>
-                <LineGraph changeDialogState={this.changeDialogState2} vals={this.state.graph2Data} name={this.state.graph2value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph2Times} trials={this.state.trials} changeTrial={this.changeTrial2}/>
+                <LineGraph changeDialogState={this.changeDialogState2} vals={this.state.graph2Data} name={this.state.graph2value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph2Times} trials={this.state.trials} changeTrial={this.changeTrial2} laps={this.state.graph2Laps}/>
             </Grid>
             </Grid>
             <Grid container direction={"row"}>
             <Grid item xs={6}>
-                <LineGraph changeDialogState={this.changeDialogState3} vals={this.state.graph3Data} name={this.state.graph3value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph3Times} trials={this.state.trials} changeTrial={this.changeTrial3}/>
+                <LineGraph changeDialogState={this.changeDialogState3} vals={this.state.graph3Data} name={this.state.graph3value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph3Times} trials={this.state.trials} changeTrial={this.changeTrial3} laps={this.state.graph3Laps}/>
             </Grid>
             <Grid item xs={6}>
-                <LineGraph changeDialogState={this.changeDialogState4} vals={this.state.graph4Data} name={this.state.graph4value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph4Times} trials={this.state.trials} changeTrial={this.changeTrial4}/>
+                <LineGraph changeDialogState={this.changeDialogState4} vals={this.state.graph4Data} name={this.state.graph4value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph4Times} trials={this.state.trials} changeTrial={this.changeTrial4} laps={this.state.graph4Laps}/>
             </Grid>
             </Grid>
         </Grid>

@@ -1,19 +1,39 @@
 import React from 'react';
-import { Grid, Select, MenuItem, Typography, Button } from '@material-ui/core';
+import { Grid, Select, MenuItem, Typography } from '@material-ui/core';
 import Chart from "react-apexcharts";
-import { dark } from '@material-ui/core/styles/createPalette';
 import './App.css'
 
 class LineGraph extends React.Component {
   render() {
+    var annotationArray = [];
+    if (this.props.laps) {
+      this.props.laps.forEach((lap, index) => {
+        annotationArray[index] = {
+          x: lap,
+          strokeDashArray: 0,
+          borderColor: '#f2a922',
+          fillColor: '#f2a922',
+          label: {
+            text: "Lap " + (index+1),
+            borderColor: "f2a922",
+            style: {
+              color: "#fff",
+              background: "#f2a922",
+            }
+          }
+        }
+      })
+    };
     var imgPath = "<img src=" + process.env.PUBLIC_URL + '/reset.png width="20">';
-    console.log("test");
-    console.log(this.props.labels);
     var series = [{
       name: this.props.name,
       data: this.props.vals
     }]
     var options = {
+      annotations: {
+        position: "front",
+        xaxis: annotationArray,
+      },
       chart: {
         animations: {
           enabled: true,
