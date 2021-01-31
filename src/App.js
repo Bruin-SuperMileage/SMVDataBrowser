@@ -1,6 +1,6 @@
 import React from 'react';
 import firebase from './firebase';
-import { Grid, withStyles, Paper, Typography, AppBar, Toolbar } from '@material-ui/core'
+import { Grid, withStyles, Paper, Typography, AppBar, Toolbar, Link } from '@material-ui/core'
 // import MenuIcon from '@material-ui/icons/Menu';
 // import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 // import DirectionsCarIcon from '@material-ui/icons/DirectionsCar';
@@ -10,8 +10,6 @@ import LineGraph from './line'
 const styles = theme => ({
   root: {
     minHeight: "100vh",
-    // width: "100%",
-    // position: "fixed",
     backgroundColor: "rgb(51, 48, 48)",
   },
   drawer: {
@@ -26,7 +24,7 @@ const styles = theme => ({
   },
 })
 
-class App extends React.Component {
+class App extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -67,8 +65,9 @@ class App extends React.Component {
       this.setState({
         running: running,
       })
-      if (running === "True")
+      if (running === "True") {
         return;
+      }
       trials = [];
       Object.keys(allData).forEach(key => {
         if (key[0]==='T')
@@ -107,6 +106,7 @@ class App extends React.Component {
             graph4Data.push(times[key][split4[0]][split2[1]]);
           }
         })
+        console.log(graph1Data);
         this.setState({
           graph1Times: trialTimes,
           graph2Times: trialTimes,
@@ -129,8 +129,10 @@ class App extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevState.graph1value !== this.state.graph1value || prevState.graph1Trial !== this.state.graph1Trial) {
       let database = firebase.database();
+      console.log(this.state.graph1Trial)
       database.ref("Trial " + this.state.graph1Trial).on('value', (snapshot) => {
         var times = snapshot.val();
+        console.log(times)
         var graph1Data = [];
         var trialTimes = [];
         var split1 = this.state.graph1value.split("|");
@@ -155,7 +157,6 @@ class App extends React.Component {
                   var lapMilli = parseInt(lapSplit[0])*60000 + parseInt(secondLapSplit[0])*1000 + parseInt(secondLapSplit[1])
                   lapAccu += lapMilli;
                   lapTimes.push(lapAccu);
-                  console.log(lapAccu)
                 }
               })
             }
@@ -234,6 +235,7 @@ class App extends React.Component {
       })
     }
     if (prevState.graph3value !== this.state.graph3value || prevState.graph3Trial !== this.state.graph3Trial) {
+      console.log("change")
       let database = firebase.database();
       database.ref("Trial " + this.state.graph3Trial).on('value', (snapshot) => {
         var times = snapshot.val();
@@ -341,15 +343,6 @@ class App extends React.Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.running === "True") {
-      console.log("pause");
-      return false;
-    }
-    console.log("unpause");
-    return true;
-  }
-
   toggleDrawer = () => {
       this.setState({
         drawerOpen: !this.state.drawerOpen,
@@ -399,37 +392,50 @@ class App extends React.Component {
 
   render() {
     const {classes} = this.props;
-    return(
-      <Paper className={classes.root} square={true}>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography component="h1" variant="h6" className={classes.title}>
-              Bruin Supermileage Data Browser
-            </Typography>
-            <img src={process.env.PUBLIC_URL + "/icon.png"} height="40rem" alt=""/>
-          </Toolbar>
-        </AppBar>
-        <Grid container spacing={0}>
-            <Grid container direction={"row"} alignItems={"stretch"}>
-            <Grid item xs={6} className={classes.grid}>
-                <LineGraph changeDialogState={this.changeDialogState1} vals={this.state.graph1Data} name={this.state.graph1value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph1Times} trials={this.state.trials} changeTrial={this.changeTrial1} laps={this.state.graph1Laps}/>
-                {/* <ApexLineGraph changeDialogState={this.changeDialogState1} vals={this.state.graph1Data} name={this.state.graph1value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph1Times} trials={this.state.trials} changeTrial={this.changeTrial1}/> */}
+    if (this.state.running === "True") {
+      return(
+      <Paper>
+          <Grid container spacing={0} direction={"column"} alignItems="center" justify="center" style={{minHeight: '100vh'}}>
+            <Grid item xs = {5}>
+              <Typography component="h1" variant="h1" style={{textAlign: "center"}}>
+                Live data running! Click <Link href = "https://bruin-supermileage.github.io/ground-dash/"> here</Link> live data browser!
+              </Typography>
             </Grid>
-            <Grid item xs={6}>
-                <LineGraph changeDialogState={this.changeDialogState2} vals={this.state.graph2Data} name={this.state.graph2value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph2Times} trials={this.state.trials} changeTrial={this.changeTrial2} laps={this.state.graph2Laps}/>
-            </Grid>
-            </Grid>
-            <Grid container direction={"row"}>
-            <Grid item xs={6}>
-                <LineGraph changeDialogState={this.changeDialogState3} vals={this.state.graph3Data} name={this.state.graph3value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph3Times} trials={this.state.trials} changeTrial={this.changeTrial3} laps={this.state.graph3Laps}/>
-            </Grid>
-            <Grid item xs={6}>
-                <LineGraph changeDialogState={this.changeDialogState4} vals={this.state.graph4Data} name={this.state.graph4value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph4Times} trials={this.state.trials} changeTrial={this.changeTrial4} laps={this.state.graph4Laps}/>
-            </Grid>
-            </Grid>
-        </Grid>
-      </Paper>
-    );
+          </Grid>
+        </Paper>
+      )}
+    else {
+      return(
+        <Paper className={classes.root} square={true}>
+          <AppBar position="static">
+            <Toolbar>
+              <Typography component="h1" variant="h6" className={classes.title}>
+                Bruin Supermileage Data Browser
+              </Typography>
+              <img src={process.env.PUBLIC_URL + "/icon.png"} height="40rem" alt=""/>
+            </Toolbar>
+          </AppBar>
+          <Grid container spacing={0}>
+              <Grid container direction={"row"} alignItems={"stretch"}>
+              <Grid item xs={6} className={classes.grid}>
+                  <LineGraph changeDialogState={this.changeDialogState1} vals={this.state.graph1Data} name={this.state.graph1value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph1Times} trials={this.state.trials} changeTrial={this.changeTrial1} laps={this.state.graph1Laps}/>
+              </Grid>
+              <Grid item xs={6}>
+                  <LineGraph changeDialogState={this.changeDialogState2} vals={this.state.graph2Data} name={this.state.graph2value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph2Times} trials={this.state.trials} changeTrial={this.changeTrial2} laps={this.state.graph2Laps}/>
+              </Grid>
+              </Grid>
+              <Grid container direction={"row"}>
+              <Grid item xs={6}>
+                  <LineGraph changeDialogState={this.changeDialogState3} vals={this.state.graph3Data} name={this.state.graph3value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph3Times} trials={this.state.trials} changeTrial={this.changeTrial3} laps={this.state.graph3Laps}/>
+              </Grid>
+              <Grid item xs={6}>
+                  <LineGraph changeDialogState={this.changeDialogState4} vals={this.state.graph4Data} name={this.state.graph4value.split("|")[1].split(' ').map(capitalize).join(' ')} labels={this.state.graph4Times} trials={this.state.trials} changeTrial={this.changeTrial4} laps={this.state.graph4Laps}/>
+              </Grid>
+              </Grid>
+          </Grid>
+        </Paper>
+      );
+    }
   }
 }
 
